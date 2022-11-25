@@ -17,7 +17,7 @@ The Dev environment implies the creation of a virtual environment (venv) whose d
 - create .venv directory: > ```python3 -m venv .venv```
 - activate .venv: > ```source .venv/bin/activate```
 - install dependencies on .venv from requiremnts.txt: > ```pip install -r requirements.txt```
-- generate documentation using pdoc: > ```pdoc --math -d google -o docs backend_emulator``` 
+- generate documentation using pdoc: > ```pdoc --math -d google -o docs src``` 
 
 ---
 
@@ -40,16 +40,16 @@ The Dev environment implies the creation of a virtual environment (venv) whose d
 pull-new-commit: 
 - This stage must print a message "Pulling new commits", change directory and pull the code to selected directory: 
     - echo "Pulling new commits" 
-    - ssh atnog@10.0.12.91 "cd ~/git/backend-emulator; git pull;"
+    - ssh atnog@10.0.12.91 "cd ~/git/indoor-location-emulator-backend; git pull;"
 
 build-container: 
 - This stage must print a message "Building new image on latest commit", change directory, build docker image with last commit: 
     - echo "Building new image on latest commit" 
-    - ssh atnog@10.0.12.91 "cd ~/git/backend-emulator; sudo docker build -t sdrt/backend-emulator:$CI_COMMIT_SHORT_SHA .;" 
+    - ssh atnog@10.0.12.91 "cd ~/git/indoor-location-emulator-backend; sudo docker build -t sdrt/indoor-location-emulator-backend:$CI_COMMIT_SHORT_SHA .;" 
 
 deploy-container: 
 - This stage must print a message "Stopping and removing current container", stop docker image, remove docker image and run docker image with last commit: 
     - echo "Stopping and removing current container"
-    - ssh atnog@10.0.12.91 "sudo docker stop backend-emulator; sudo docker rm backend-emulator; sudo docker run -d --name=backend-emulator sdrt/backend-emulator:$CI_COMMIT_SHORT_SHA;"
+    - ssh atnog@10.0.12.91 "sudo docker stop indoor-location-emulator-backend; sudo docker rm indoor-location-emulator-backend; sudo docker run -d --name=indoor-location-emulator-backend sdrt/indoor-location-emulator-backend:$CI_COMMIT_SHORT_SHA;"
 
 ---
