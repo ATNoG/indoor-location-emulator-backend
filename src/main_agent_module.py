@@ -52,6 +52,9 @@ walls_by_quadrants = {}
 # global dict to get featuresType by session
 featuresType = {}
 
+# global domain_name_server
+domain_name_server = "http://10.0.12.91/sdrt/"
+
 # MQTT Variables
 Connected = False           # Global var to set Connected STATE
 broker_host = "10.0.12.91"  # Broker address
@@ -1008,6 +1011,7 @@ def calculate(client: mqtt.Client, session_uuid: str, calculate_cache: dict):
     global antenna_experimental_values
     global matrix_quadrants_long
     global matrix_quadrants_lat
+    global domain_name_server
 
     # verify if status (close) is on message
     if(god.getStatus(session_uuid) == "close"):
@@ -1022,15 +1026,15 @@ def calculate(client: mqtt.Client, session_uuid: str, calculate_cache: dict):
         if(god.getMapId(session_uuid) == 0):
             # open config file
             config_file_url = urllib.request.urlopen(
-                "http://10.0.12.91/sdrt/static-files/config_files/config-params-library-ua-floor2.json")
+                f"{domain_name_server}/static-objects/config_files/config-params-library-ua-floor2.json")
         elif(god.getMapId(session_uuid) == 1):
             # open config file
             config_file_url = urllib.request.urlopen(
-                "http://10.0.12.91/sdrt/static-files/config_files/config-params-aveiro-it-building1.json")
+                f"{domain_name_server}/static-objects/config_files/config-params-aveiro-it-building1.json")
         elif(god.getMapId(session_uuid) == 2):
             # open config file
             config_file_url = urllib.request.urlopen(
-                "http://10.0.12.91/sdrt/static-files/config_files/config-params-sjm-policlinica-mario-martins.json")
+                f"{domain_name_server}/static-objects/config_files/config-params-sjm-policlinica-mario-martins.json")
 
         # read config data file
         config_data = config_file_url.read().decode('utf-8')
@@ -1045,7 +1049,7 @@ def calculate(client: mqtt.Client, session_uuid: str, calculate_cache: dict):
         featuresType[session_uuid] = config_json["features"]
 
         # open file map
-        map_file_url = urllib.request.urlopen(f"http://10.0.12.91/sdrt/{map_path_name}") 
+        map_file_url = urllib.request.urlopen(f"{domain_name_server}/{map_path_name}") 
         # read map data file
         map_data = map_file_url.read().decode('utf-8')
         # load to geojson
@@ -1059,7 +1063,7 @@ def calculate(client: mqtt.Client, session_uuid: str, calculate_cache: dict):
         ########## Antenna RF Activations & Average Time of Readings ##########
         # Get Nr_Activations and AvgTimeReadings of Antenna data from csv file
         antenna_dataset_file_url = urllib.request.urlopen(
-            "http://10.0.12.91/sdrt/static-files/antenna_datasets/antenna_experimental_dataset_10m.csv")
+            f"{domain_name_server}/static-objects/antenna_datasets/antenna_experimental_dataset_10m.csv")
         # read antenna data file
         antenna_experimental_data_activations = antenna_dataset_file_url.read().decode('utf-8')
 
